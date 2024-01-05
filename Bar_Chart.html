@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Heart Rate Chart</title>
+    <!-- Include the Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <!-- Include Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include the Chart.js annotation plugin -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="./fontawesome.min.css">
+    <link rel="stylesheet" href="./fontawesome.css">
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/1.0.2/chartjs-plugin-annotation.min.js"></script>
+    <script src="path/to/chartjs-plugin-annotation/dist/chartjs-plugin-annotation.min.js"></script>
+
+</head>
+<style>
+    .graph {
+        width: 700px;
+        display: block;
+        margin: auto;
+        box-shadow: 2px 2px 2px rgb(19, 143, 108), inset -5px -5px -5px rgb(34, 203, 175);
+    }
+
+    .f,
+    .s,
+    .t,.F {
+        position: relative;
+    }
+
+    .f {
+        top: 129px;
+        left: 247px;
+    }
+
+    .s {
+        top: 118px;
+        left: 309px;
+    }
+
+    .t {
+        top: 72px;
+        left: 372px;
+    }
+
+    .F {
+        top: 83px;
+        left: 435px;
+    }
+</style>
+
+<body class="has-background-primary">
+
+
+    <div class="container mt-4 py-5">
+        <div class="box has-background-grey-lighter graph">
+            <p class="title has-text-centered has-text-black is-size-4 m-2 mt-5">Steps</p>
+            <span class="f has-text-white is-size-5"><i class="fas fa-star"></i></span>
+            <span class="s has-text-white is-size-5"><i class="fas fa-star"></i></span>
+            <span class="t has-text-white is-size-5"><i class="fas fa-star"></i></span>
+            <span class="F has-text-white is-size-5"><i class="fas fa-star"></i></span>
+            <canvas id="heartRateChart" width="190" height="70"></canvas>
+        </div>
+    </div>
+    <div class="is-flex is-justify-content-center is-align-items-center is-flex-direction-row mt-3">
+        <div class="px-4">
+            <i class="has-text-info fa fa-shoe-prints is-size-3"></i>
+        </div>
+        <div class="px-4">
+            <p class="has-text-weight-bold">Try Hitting 10,000 steps a day!</p>
+            <p>That's the American Heart Association</p>
+        </div>
+    </div>
+
+    <div class="container mt-3 pb-4">
+        <div
+            class="is-flex is-justify-content-space-between has-background-info has-text-white has-text-weight-bold p-4 box">
+            <div class="px-3"> This Week
+            </div>
+            <div class="px-3">
+                48,299<sub>steps</sub>
+            </div>
+        </div>
+
+        <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-content-center p-1">
+            <p class="has-text-weight-bold has-text-black">Today</p>
+            <p class="has-text-black has-text-weight-bold">10,507<sub>steps</sub> </p>
+            <p class="has-text-black px-3"><i class="px-5"></i><i class="fas fa-greater-than"></i></p>
+        </div>
+        <hr>
+        <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-content-center p-1">
+            <p class="has-text-black">Wed</p>
+            <p class="has-text-black has-text-weight-bold">15,866<sub>steps</sub> </p>
+            <p class="has-text-black"><i class="fas fa-star px-3"></i><i class="fas fa-greater-than px-3"></i></p>
+        </div>
+        <hr>
+        <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-content-center p-1">
+            <p class="has-text-black">Thur</p>
+            <p class="has-text-black has-text-weight-bold">10,636<sub>steps</sub> </p>
+            <p class="has-text-black"><i class="fas fa-star px-3"></i><i class="fas fa-greater-than px-3"></i></p>
+        </div>
+        <hr>
+        <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-content-center p-1">
+            <p class="has-text-black">Fri</p>
+            <p class="has-text-black has-text-weight-bold">12,290<sub>steps</sub> </p>
+            <p class="has-text-black"><i class="fas fa-star px-3"></i> <i class="fas fa-greater-than px-3"></i></p>
+        </div>
+        <hr>
+
+        <div
+            class="is-flex is-justify-content-space-between has-background-info has-text-white has-text-weight-bold p-4 box">
+            <div class="px-3"> Last Week
+            </div>
+            <div class="px-3">
+                77,615<sub>steps</sub>
+            </div>
+        </div>
+
+        <div class="is-flex is-flex-direction-row is-justify-content-space-between is-align-content-center p-1">
+            <p>Sun</p>
+            <p class="has-text-black has-text-weight-bold">9,507 <sub>steps</sub> </p>
+            <p class="has-text-black px-3"><i class="fas fa-star px-3"></i><i class="fas fa-greater-than px-3"></i></p>
+        </div>
+        <hr>
+    </div>
+
+
+    <script>
+        var ctx = document.getElementById('heartRateChart').getContext('2d');
+        var data = {
+            labels: ["F", "S", "S", "M", "T", "W", "T"],
+            datasets: [{
+                label: '',
+                data: [16000, 12000, 10000, 11000, 15000, 14000, 13000],
+                backgroundColor: ['rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    '#FFFFFF'],
+                borderWidth: 1,
+                barPercentage: 0.5,
+                borderRadius: 5, // You can adjust this value according to your preference
+
+            }]
+        };
+
+        var options = {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value / 1000 + 'k';
+                        }
+                    }
+                }
+            }, plugins: {
+                annotation: {
+                    annotations: {
+                        line1: {
+                            type: 'line',
+                            yMin: 10000,
+                            yMax: 10000,
+                            borderColor: '#FFFFFF',
+                            borderWidth: 2,
+                        },
+                    }
+                }
+            },
+        };
+
+        // Create the line chart with time scale
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: data,
+            options: options,
+        });
+    </script>
+
+
+
+</body>
+
+</html>
